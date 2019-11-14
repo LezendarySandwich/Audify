@@ -1,5 +1,5 @@
 from cmath import *
-
+	
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -61,7 +61,7 @@ class Song():
 		if cur_sampling_freq != self.sampling_freq:
 			print("Resampling from", cur_sampling_freq, 'to', self.sampling_freq)
 			newname = filename.split('.')[-2]+'.wav'
-			print('./sox', filename, '-r', str(self.sampling_freq), newname)
+			#print('./sox', filename, '-r', str(self.sampling_freq), newname)
 			subprocess.call(['./sox', filename, '-r', str(self.sampling_freq), newname])
 			cur_sampling_freq, self.data = wavfile.read(newname)
 
@@ -111,6 +111,7 @@ class Song():
 			print("Freq. bins for 256 bins are:", logarithmic_bands)
 		elif freq_bins == 512:
 			logarithmic_bands = [(0,20), (20,60), (60,120), (120,240), (240,512)]
+			#logarithmic_bands = [(0,10), (10,20), (20,40), (40,80), (80,160), (160,512)]
 			print("Freq. bins for 512 bins are:", logarithmic_bands)
 		elif freq_bins == 1024:
 			logarithmic_bands = [(0,64), (64,256), (256,512), (512,1024)]
@@ -162,7 +163,7 @@ class Song():
 					final_f.append(f_bin)
 					
 			filtered_spectogram[time_slice] = final_f
-
+		
 		#scatter plot of the filtered spectogram
 		if plot:
 			to_plot_x, to_plot_y = [], []
