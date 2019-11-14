@@ -69,7 +69,10 @@ class Findit():
 			x = song.filtered
 			print("Found filtered spectogram for",song.name,"in pickle dump")
 		except:
-			x = song.fft_and_mask(plot_spec=False, plot_filtered=False)
+			if is_target:
+    				x = song.fft_and_mask(plot_spec=False, plot_filtered=True)
+			else:
+    				x = song.fft_and_mask(plot_spec=False, plot_filtered=False)
 			if not is_target:
 				song.dump(base_pth=self.data_path, dump_data=False)
 

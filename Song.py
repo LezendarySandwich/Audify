@@ -173,7 +173,7 @@ class Song():
 			for log_band in logarithmic_bands:
 				plt.axhline(y=log_band[0], color='k', linestyle='-')
 			plt.ylim(0, freq_bins)
-			plt.show()
+			plt.savefig("img/plot.png")
 
 		return filtered_spectogram
 
@@ -211,7 +211,7 @@ class Song():
 			count += 1
 
 		#plot the spectogram if set to True
-		if plot:
+		if 1:
 
 			fig, ax = plt.subplots()
 			c = ax.pcolormesh(x, y/1000, fft_values, cmap='BrBG')
