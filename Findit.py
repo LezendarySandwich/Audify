@@ -73,7 +73,7 @@ class Findit():
     				x = song.fft_and_mask(plot_spec=False, plot_filtered=True)
 			else:
     				x = song.fft_and_mask(plot_spec=False, plot_filtered=False)
-			if not is_target:
+			if not is_target: 
 				song.dump(base_pth=self.data_path, dump_data=False)
 
 		#x has structure: {'time_slice':list_of_preserved_frequencies: e.g.: '1':[freq, freq2, etc.], '2':[freq1, freq2, etc.]}

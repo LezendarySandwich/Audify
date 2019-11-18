@@ -211,7 +211,7 @@ class Song():
 			count += 1
 
 		#plot the spectogram if set to True
-		if 1:
+		if plot:
 
 			fig, ax = plt.subplots()
 			c = ax.pcolormesh(x, y/1000, fft_values, cmap='BrBG')
@@ -222,7 +222,7 @@ class Song():
 
 			fig.colorbar(c, ax=ax)
 
-			plt.show()
+			plt.save("img/plot.png")
 
 		return x, y, fft_values
 
@@ -272,7 +272,7 @@ def recursive_fft(x):
  
 		even = recursive_fft([x[k] for k in range(0,N,2)])
 		odd = recursive_fft([x[k] for k in range(1,N,2)])
- 
+        
 		M=N//2
 		l=[ even[k] + exp(-2j*pi*k/N)*odd[k] for k in range(M) ]
 		r=[ even[k] - exp(-2j*pi*k/N)*odd[k] for k in range(N-M) ]
@@ -282,7 +282,7 @@ def recursive_fft(x):
 def fft(x, window_func, window_size):
 
 	l = len(x)
-	#Add padding in case length of data is not a power of two
+	#Add padding in case length of data is not a power of two as it makes fft faster
 	if l != window_size:
 
 		print("Adding padding of",window_size-l)
