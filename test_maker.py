@@ -5,8 +5,9 @@ import numpy as np
 import os, shutil
 import matplotlib.pyplot as plt
 import time
-
-from Shazam import Shazam
+from trimSongs import trimSong
+from Findit import Findit
+#from Shazam import Shazam
 from Song import Song
 
 """
@@ -17,10 +18,11 @@ input is the path_to_song, output directory, start of the clip and the duration
 def trim_s(song_pth, target_folder, start, duration):
 
 	#new clip has the following name: <name>_start_duration.wav
-	new_name = target_folder+song_pth.split('.')[0].split('/')[-1]+'_'+str(start)+'_'+str(duration)+'.wav'
+	new_name = song_pth.split('.')[0].split('/')[-1]+'_'+str(start)+'_'+str(duration)+'.wav'
 	#use soX to clip the file
-	subprocess.call(['./sox', song_pth, new_name, 'trim', str(start), str(duration)])
-
+	trimSong(song_pth, new_name, target_folder, start, duration)
+	#print(song_pth,new_name)
+	#subprocess.call(['./sox', song_pth, song_pth, 'trim', str(start), str(duration)])
 """
 creates batch of clips to test on
 songs_path is the directory which contains the original songs
@@ -32,7 +34,7 @@ def create_clips(num_clips, songs_path='audio/', target_path='test/'):
 	#parameters which define the lower and upper bounds for the clips
 	lower_length, upper_length = 2, 12
 	#maximum starting point to clip the audio. Should be lesser than min(duration_of_songs)-upper-length
-	start_max = 90
+	start_max = 7
 	songs_dir = [x for x in os.listdir(songs_path) if x != '.DS_Store']
 	total_clips = len(songs_dir)
 	#random batch of start points and the lengths of the clips
@@ -55,7 +57,7 @@ set fresh start = True if the directory of clips needs to be cleaned before gene
 def batch_testing(fresh_start=True, songs_path='audio/', data_path='data/', clips_path='test/'):
 	
 	#clip files have structure: <name-of-song>_start_dur.wav
-	num_clips = 200
+	num_clips = 20
 	#parameters for the Shazam app
 	window_size = 1024
 	downsample_factor = 2
@@ -69,9 +71,10 @@ def batch_testing(fresh_start=True, songs_path='audio/', data_path='data/', clip
 
 	#create clips to test
 	create_clips(num_clips)
+	app = Findit(audio_path='audio/', data_path='data/')
 	#initialise the app
-	app = Shazam(songs_path, data_path)
-
+	#app = Shazam(songs_path, data_path)
+    
 	#store results
 	stats = {}
 	#to track time
@@ -89,6 +92,7 @@ def batch_testing(fresh_start=True, songs_path='audio/', data_path='data/', clip
 		start, duration = int(song.split('_')[-2]), int(song.split('_')[-1].split('.')[0])
 		#update the total duration of clips
 		clips_dur += duration
+		print(clips_path+song)
 
 		#for each duration, store a dictionary of the 3 aforementioned categories 
 		if duration not in stats.keys():
@@ -97,7 +101,7 @@ def batch_testing(fresh_start=True, songs_path='audio/', data_path='data/', clip
 		#test
 		to_test = app.create_song(clips_path+song, try_dumped=True, is_target=True)
 		print("Testing on", song_name)
-		song_pred, time_pred = app.compare_song(to_test)
+		song_pred, time_pred = app.compare_song(to_test, check = True)
 		
 		#update statistics
 		if song_pred == song_name and abs(time_pred-start) < time_delta:
@@ -120,6 +124,8 @@ def batch_testing(fresh_start=True, songs_path='audio/', data_path='data/', clip
 		egs = sum(vals.values())
 		for t_, num in vals.items():
 			percent = 100*num/egs
+			#if num == 0 :
+    		#		continue
 			if t_ == 'correct_time':
 				ax.scatter(dur, percent, c='g')
 				ct += num
@@ -127,7 +133,7 @@ def batch_testing(fresh_start=True, songs_path='audio/', data_path='data/', clip
 				ax.scatter(dur, percent, c='b')
 				c += num
 			else:
-				ax.scatter(dur, percent, c='r')
+				ax.scatter(dur, percent, c='C1')
 				w += num
 
 	title = "time_taken: " + str(round(time_taken,4)) + "; len_clips: " + str(clips_dur) + 's'
@@ -136,8 +142,9 @@ def batch_testing(fresh_start=True, songs_path='audio/', data_path='data/', clip
 	plt.xlabel("Time duration in s")
 	plt.ylabel("Percent success")
 	plt.grid(True)
-	plt.show()
+	plt.savefig('img/result.png')
+	shutil.rmtree(clips_path)
+	os.mkdir(clips_path)
 
 if __name__ == '__main__':
-
 	batch_testing()

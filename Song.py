@@ -67,7 +67,9 @@ class Song():
 
 			#delete the resampled file since the target audio is not to be stored for further use
 			if is_target:
-				os.rename(newname,filename)#os.remove(newname)
+    				os.rename(newname, filename)
+    		    #os.rename(newname, filename)
+				#os.remove(newname)
 			else:
 				os.rename(newname, filename)
 
@@ -222,7 +224,8 @@ class Song():
 
 			fig.colorbar(c, ax=ax)
 
-			plt.save("img/plot.png")
+			plt.savefig("img/spectogram.png")
+			#plt.close(fig)
 
 		return x, y, fft_values
 

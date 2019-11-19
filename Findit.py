@@ -5,13 +5,14 @@ import pickle
 import operator
 import mp3_to_wav
 from Song import Song
+import shutil
 """
 The main driver which creates database of songs, stores their audio fingerprint and compares it with an input clip
 """
 
 class Findit():
 
-	def __init__(self, audio_path, data_path, temp_data_path):
+	def __init__(self, audio_path, data_path):
 
 		self.audio_path = audio_path
 		self.data_path = data_path  #path for storing temporary data such as hashes and spectograms
@@ -22,6 +23,7 @@ class Findit():
 		self.window_size = 1024 
 		self.sampling_freq = 22100 #since most audible enrgy is below 10.05 KHz (by Nyquist)
 		self.round_off = 6 #Round of the floating point numbers
+		self.testmaker = False
 
 		#database.pkl contains the audio fingerprint for each song in the form of a hash table 
 		
@@ -69,10 +71,9 @@ class Findit():
 			x = song.filtered
 			print("Found filtered spectogram for",song.name,"in pickle dump")
 		except:
-			if is_target:
-    				x = song.fft_and_mask(plot_spec=False, plot_filtered=True)
-			else:
-    				x = song.fft_and_mask(plot_spec=False, plot_filtered=False)
+			#print(is_target and (not self.testmaker))
+			x = song.fft_and_mask(plot_spec=is_target and (not self.testmaker), plot_filtered=is_target and (not self.testmaker))
+
 			if not is_target: 
 				song.dump(base_pth=self.data_path, dump_data=False)
 
@@ -165,7 +166,6 @@ class Findit():
 	
 #Hash all the songs in the audio/ folder and store it as a pkl file
 	def hash_database(self):
-
 		for songname in sorted(os.listdir(self.audio_path)):
 			if songname == '.DS_Store':
 				continue
@@ -215,10 +215,13 @@ class Findit():
 	Compares the input audio with all the songs int he database and returns the best match
 	Always returns the best match. Can be configured to return 'No match' if matching notes/similarity fall below a threshold
 	"""
-	def compare_song(self, song):
+	def compare_song(self, song, check = False):
 
 		#Hash is of the structure: key = (anchor freq, point freq, delta time) value = (absolute time of anchor, song id)
+		self.testmaker = check
+		
 		cur_song_hash = self.hash_one_song(song, is_target=True)
+		
 		
 		#Hash the audio files in the database
 		if len(self.database) == 0:
@@ -306,11 +309,17 @@ if __name__ == "__main__":
 	#make Findit object
 	mp3_to_wav.convert('addSongs/')
 	
-	app = Findit(audio_path='audio/', data_path='data/', temp_data_path='temporary data/')
+	app = Findit(audio_path='audio/', data_path='data/')
 	#create song object from input path
-	song = app.create_song('test/find.wav', try_dumped=True, is_target=True)
+	for songname in sorted (os.listdir('test/')):
+		if songname == '.DS_Store':
+    			continue
+		song = app.create_song('test/'+songname, try_dumped=True, is_target=True)	
+		print(songname)
+		app.compare_song(song)
+	shutil.rmtree('test/')
+	os.mkdir('test/')
 	#Find best match
-	app.compare_song(song)
 
 	# song.fft_and_mask(plot_spec=True, plot_filtered=True) #Used for visualising the spectogram
 	
