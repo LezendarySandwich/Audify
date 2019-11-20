@@ -268,6 +268,10 @@ class Findit():
 		if len(songs_to_consider) == 0:
 			print("Couldn't reach threshold. Weak suggestions:")
 			sorted_x = sorted(common_targets.items(), key=operator.itemgetter(1), reverse=True)
+			if len(sorted_x) == 0:
+				print("\n*** Could not find the song in the database ***\n")
+				return ('.',-1)
+					
 			songs_to_consider = [x[0] for x in sorted_x[:3]]
 		
 		#Check for time coherency at this stage. Find a delta per song which has maximizes number of instances of:
@@ -275,7 +279,7 @@ class Findit():
 		final_songs_data = self.filter_database_song(songs_to_consider)
 		coherent_notes = {}
 		# print(songs_to_consider)
-		
+		#print(songs_to_consider)
 		for song_name, sdict in final_songs_data.items():
 			deltas = {}
 			for freq_pair, anchor_times in cur_song_hash.items():
