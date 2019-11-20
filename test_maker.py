@@ -10,10 +10,6 @@ from Findit import Findit
 #from Shazam import Shazam
 from Song import Song
 
-"""
-trim the song using soX
-input is the path_to_song, output directory, start of the clip and the duration
-"""
 
 def trim_s(song_pth, target_folder, start, duration):
 
@@ -115,7 +111,7 @@ def batch_testing(fresh_start=True, songs_path='audio/', data_path='data/', clip
 	time_taken = time.time() - start_time
 
 	#plot the stastics
-	#green - correct with time, blue - correct, red - wrong
+	#green - correct with time, blue - correct, orange - wrong
 	print(stats, time_taken)
 	fig, ax = plt.subplots()
 	ct, c, w = 0,0,0

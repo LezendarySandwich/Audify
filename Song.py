@@ -175,7 +175,7 @@ class Song():
 			for log_band in logarithmic_bands:
 				plt.axhline(y=log_band[0], color='k', linestyle='-')
 			plt.ylim(0, freq_bins)
-			plt.savefig("img/plot.png")
+			plt.savefig("img/filtered-spectogram.png")
 
 		return filtered_spectogram
 
@@ -208,6 +208,7 @@ class Song():
 			
 			cur_slice = self.data[start: start+self.window_size]		
 			cur_fft = fft(cur_slice, window_func, self.window_size)
+			#print(cur_fft)
 			fft_values[:, count] = cur_fft
 			start += int((1-self.overlap_factor)*self.window_size)
 			count += 1
