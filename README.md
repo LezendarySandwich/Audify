@@ -8,13 +8,14 @@
 - Matching Audio Fingerprints, which are extracted hash tokens from the audio samples, with the fingerprints of the songs present in our database and then the result was computed. 
 # Results
 Spectrogram (Song - Neovaii - I remember)<br/>
-<img src="https://drive.google.com/uc?export=view&id=1O1di5OuZ3aZeUvIh3CcSyRHmS2Xx0GDz" alt="alt text"
+<img src="https://drive.google.com/uc?export=view&id=1O1di5OuZ3aZeUvIh3CcSyRHmS2Xx0GDz" alt="alt Spectrogram"
 width="500" height="400">
 
 Filtered Spectrogram (Song - Neovaii - I remember)<br/>
-<img src="https://drive.google.com/uc?export=view&id=1d3-il8002h2VQthx_lCbdGKDJzot4nT4" alt="alt text"
+<img src="https://drive.google.com/uc?export=view&id=1d3-il8002h2VQthx_lCbdGKDJzot4nT4" alt="alt Filtered Spectrogram"
 width="550" height="400">
-<img src="https://drive.google.com/uc?export=view&id=19fzFwK2hWXR8ZGEMbGFOallgfAb2LTuo" alt="alt text" width="500" height="400">
+
+<img src="https://drive.google.com/uc?export=view&id=19fzFwK2hWXR8ZGEMbGFOallgfAb2LTuo" alt="alt Result" width="500" height="400">
 
 Blue: Correctly recognized
 <br/>
