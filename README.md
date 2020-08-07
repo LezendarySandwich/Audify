@@ -30,6 +30,29 @@ Correct matches: 162
 Time taken: 30 minutes
 <br/>
 Percentage accuracy: 94.18%
+___
+Do the following in order to run the above model (commands for linux terminal)
+``` batch
+git clone https://github.com/LezendarySandwich/Audify.git
+```
+``` batch
+cd Audify
+```
+``` batch
+Add songs to database: 
+Move songs in the addSongs folder, then run
+python3 Findit.py
+```
+``` batch
+Find song in the database: 
+Move songs to be identified in the test folder, then run
+python3 Findit.py
+```
+``` batch
+Check for accuracy of model on a random batch of database:
+python3 test_maker.py
+```
+___
 # References
 [http://coding-geek.com/how-shazam-works/](http://coding-geek.com/how-shazam-works/)
 <br/>
