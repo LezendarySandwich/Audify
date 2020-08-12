@@ -41,6 +41,7 @@ cd Audify/Implementation/
 ```
 ``` batch
 Add songs to database: 
+Create addSongs folder
 Move songs in the addSongs folder, then run
 cd Recognize\ Song/
 python3 Findit.py
