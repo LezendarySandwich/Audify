@@ -5,11 +5,19 @@ import numpy as np
 import os, shutil
 import matplotlib.pyplot as plt
 import time
+import sys
+sys.path.insert(1,'./../TrimSongs')
+sys.path.insert(2,'./../Recognize Song')
 from trimSongs import trimSong
 from Findit import Findit
 #from Shazam import Shazam
 from Song import Song
 
+path_Images = './../Images/'
+path_audio = './../audio/'
+path_test = './../test/'
+path_database = './../database'
+path_SOX = './../Recognize Song/sox'
 
 def trim_s(song_pth, target_folder, start, duration):
 
@@ -25,7 +33,7 @@ songs_path is the directory which contains the original songs
 target_path is the folder where the clips are to be dumped
 """
 
-def create_clips(num_clips, songs_path='audio/', target_path='test/'):
+def create_clips(num_clips, songs_path=path_audio, target_path=path_test):
 
 	#parameters which define the lower and upper bounds for the clips
 	lower_length, upper_length = 2, 12
@@ -50,7 +58,7 @@ Each prediction is classified into 3 categories:
 3. wrong: incorrect prediction about the song
 set fresh start = True if the directory of clips needs to be cleaned before generating a new batch 
 """
-def batch_testing(fresh_start=True, songs_path='audio/', data_path='data/', clips_path='test/'):
+def batch_testing(fresh_start=True, songs_path=path_audio, data_path=path_database, clips_path=path_test):
 	
 	#clip files have structure: <name-of-song>_start_dur.wav
 	num_clips = 20
@@ -67,7 +75,7 @@ def batch_testing(fresh_start=True, songs_path='audio/', data_path='data/', clip
 
 	#create clips to test
 	create_clips(num_clips)
-	app = Findit(audio_path='audio/', data_path='data/')
+	app = Findit(audio_path=path_audio, data_path=path_database)
 	#initialise the app
 	#app = Shazam(songs_path, data_path)
     
@@ -138,7 +146,7 @@ def batch_testing(fresh_start=True, songs_path='audio/', data_path='data/', clip
 	plt.xlabel("Time duration in s")
 	plt.ylabel("Percent success")
 	plt.grid(True)
-	plt.savefig('img/result.png')
+	plt.savefig(path_Images)
 	shutil.rmtree(clips_path)
 	os.mkdir(clips_path)
 

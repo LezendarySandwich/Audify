@@ -20,6 +20,9 @@ overlap_factor: the factor by which the windows overlap while calcualting the DF
 
 """
 
+path_Images = './../Images/'
+path_SOX = './sox'
+
 class Song():
 
 	def __init__(self, filename, window_size, keep_coeff, try_dumped, sampling_freq, overlap, is_target):
@@ -60,7 +63,7 @@ class Song():
 		#resample
 		if cur_sampling_freq != self.sampling_freq:
 			print("Resampling from", cur_sampling_freq, 'to', self.sampling_freq)
-			newname = filename.split('.')[-2]+'.wav'
+			newname = filename.rsplit('.',1)[0]+'.wav'
 			#print('./sox', filename, '-r', str(self.sampling_freq), newname)
 			subprocess.call(['./sox', filename, '-r', str(self.sampling_freq), newname])
 			cur_sampling_freq, self.data = wavfile.read(newname)
@@ -175,7 +178,7 @@ class Song():
 			for log_band in logarithmic_bands:
 				plt.axhline(y=log_band[0], color='k', linestyle='-')
 			plt.ylim(0, freq_bins)
-			plt.savefig("img/filtered-spectogram.png")
+			plt.savefig(path_Images + 'filtered-spectogram.png')
 
 		return filtered_spectogram
 
@@ -225,7 +228,7 @@ class Song():
 
 			fig.colorbar(c, ax=ax)
 
-			plt.savefig("img/spectogram.png")
+			plt.savefig(path_Images + 'spectogram.png')
 			#plt.close(fig)
 
 		return x, y, fft_values
@@ -303,4 +306,7 @@ def fft(x, window_func, window_size):
 	dft = recursive_fft(x)
 	#Return only half the samples since the remaining are conjugates
 	mods = [abs(x) for x in dft[:len(x)//2]]
+	# for i in mods:
+	# 	if i == 0:
+    # 			i = 1
 	return 20*np.log10(mods)

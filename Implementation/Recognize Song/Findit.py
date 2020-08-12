@@ -10,6 +10,11 @@ import shutil
 The main driver which creates database of songs, stores their audio fingerprint and compares it with an input clip
 """
 
+path_audio = './../audio/'
+path_test = './../test/'
+path_database = './../database/'
+path_addSongs = './../addSongs/'
+
 class Findit():
 
 	def __init__(self, audio_path, data_path):
@@ -179,7 +184,7 @@ class Findit():
 		print("Dumped hash database")
 
 	def hash_added(self):
-		add_songs_path='addSongs/'
+		add_songs_path=path_addSongs
 		for songname in sorted(os.listdir(add_songs_path)):
 			if songname == '.DS_Store':
 				continue
@@ -225,7 +230,7 @@ class Findit():
 		
 		#Hash the audio files in the database
 		if len(self.database) == 0:
-			mp3_to_wav.convert('audio/')
+			mp3_to_wav.convert(path_audio)
 			self.hash_database()
 		self.hash_added()
 
@@ -311,18 +316,18 @@ class Findit():
 if __name__ == "__main__":
 
 	#make Findit object
-	mp3_to_wav.convert('addSongs/')
-	mp3_to_wav.convert('test/')
-	app = Findit(audio_path='audio/', data_path='data/')
+	mp3_to_wav.convert(path_addSongs)
+	mp3_to_wav.convert(path_test)
+	app = Findit(audio_path=path_audio, data_path=path_database)
 	#create song object from input path
-	for songname in sorted (os.listdir('test/')):
+	for songname in sorted (os.listdir(path_test)):
 		if songname == '.DS_Store':
     			continue
-		song = app.create_song('test/'+songname, try_dumped=True, is_target=True)	
+		song = app.create_song(path_test+songname, try_dumped=True, is_target=True)	
 		print(songname)
 		app.compare_song(song)
-	shutil.rmtree('test/')
-	os.mkdir('test/')
+	shutil.rmtree(path_test)
+	os.mkdir(path_test)
 	#Find best match
 
 	# song.fft_and_mask(plot_spec=True, plot_filtered=True) #Used for visualising the spectogram
