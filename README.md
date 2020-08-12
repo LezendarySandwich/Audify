@@ -40,8 +40,12 @@ git clone https://github.com/LezendarySandwich/Audify.git
 cd Audify
 ```
 ``` batch
+cd Implementation
+```
+``` batch
 Add songs to database: 
 Move songs in the addSongs folder, then run
+cd Recognize\ Song/
 python3 Findit.py
 ```
 ``` batch
@@ -51,6 +55,7 @@ python3 Findit.py
 ```
 ``` batch
 Check for accuracy of model on a random batch of database:
+cd Create\ Tests/
 python3 test_maker.py
 ```
 ___
